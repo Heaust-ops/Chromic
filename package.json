@@ -34,5 +34,8 @@
     "undici": "5.22.1",
     "vite": "4.3.5",
     "vite-tsconfig-paths": "4.2.0"
+  },
+  "dependencies": {
+    "ffmpeg.js": "^4.2.9003"
   }
 }
