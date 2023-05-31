@@ -1,8 +1,8 @@
-import type { GLFX } from "../glfx";
+import type { GLFXManager } from "../glfxManager";
 import { Shader } from "./shader";
 
 export class Texture {
-  glfx: GLFX;
+  glfx: GLFXManager;
   gl: WebGLRenderingContext;
   id: WebGLTexture | null;
   width: number;
@@ -12,7 +12,7 @@ export class Texture {
   canvas: HTMLCanvasElement | null;
 
   constructor(
-    glfx: GLFX,
+    glfx: GLFXManager,
     width: number,
     height: number,
     format: number,
@@ -246,5 +246,20 @@ export class Texture {
     temp = other.format;
     other.format = this.format;
     this.format = temp;
+  }
+
+  static fromElement(
+    glfx: GLFXManager,
+    element: HTMLImageElement | HTMLVideoElement
+  ) {
+    const texture = new Texture(
+      glfx,
+      0,
+      0,
+      glfx.gl.RGBA,
+      glfx.gl.UNSIGNED_BYTE
+    );
+    texture.loadContentsOf(element);
+    return texture;
   }
 }

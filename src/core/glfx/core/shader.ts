@@ -1,11 +1,11 @@
-import type { GLFX } from "../glfx";
+import type { GLFXManager } from "../glfxManager";
 
 export class Shader {
   defaultVertexSource =
     "\
     attribute vec2 vertex;\
     attribute vec2 _texCoord;\
-    letying vec2 texCoord;\
+    varying vec2 texCoord;\
     void main() {\
         texCoord = _texCoord;\
         gl_Position = vec4(vertex * 2.0 - 1.0, 0.0, 1.0);\
@@ -14,17 +14,17 @@ export class Shader {
   defaultFragmentSource =
     "\
     uniform sampler2D texture;\
-    letying vec2 texCoord;\
+    varying vec2 texCoord;\
     void main() {\
         gl_FragColor = texture2D(texture, texCoord);\
     }";
 
-  glfx: GLFX;
+  glfx: GLFXManager;
   vertexAttribute: null;
   texCoordAttribute: null;
   program: WebGLProgram | null;
 
-  constructor(glfx: GLFX, vertexSource?: string, fragmentSource?: string) {
+  constructor(glfx: GLFXManager, vertexSource?: string, fragmentSource?: string) {
     this.glfx = glfx;
     this.vertexAttribute = null;
     this.texCoordAttribute = null;
@@ -76,10 +76,10 @@ export class Shader {
     this.program = null;
   }
 
-  uniforms(uniforms: { [x: string]: any; name: any }) {
+  uniforms(uniforms: { [x: string]: any; name?: any }) {
     this.glfx.gl.useProgram(this.program);
     for (const name in uniforms) {
-      if (!uniforms.name || !this.program) continue;
+      if (!uniforms[name] || !this.program) continue;
       const location = this.glfx.gl.getUniformLocation(this.program, name);
       if (location === null) continue; // will be null if the uniform isn't used in the shader
       const value = uniforms[name];
@@ -137,7 +137,7 @@ export class Shader {
   textures(textures: { [x: string]: number; name: any }) {
     this.glfx.gl.useProgram(this.program);
     for (const name in textures) {
-      if (!textures.name || !this.program) continue;
+      if (!textures[name] || !this.program) continue;
       this.glfx.gl.uniform1i(
         this.glfx.gl.getUniformLocation(this.program, name),
         textures[name]
@@ -213,7 +213,7 @@ export class Shader {
     this.glfx.gl.drawArrays(this.glfx.gl.TRIANGLE_STRIP, 0, 4);
   }
 
-  static getDefaultShader(glfx: GLFX) {
+  static getDefaultShader(glfx: GLFXManager) {
     glfx.defaultShader = glfx.defaultShader || new Shader(glfx);
     return glfx.defaultShader;
   }
