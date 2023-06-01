@@ -19,7 +19,8 @@ type AdjustModifier =
   | SharpnessModifier
   | NoiseModifier
   | SepiaModifier
-  | VignetteModifier;
+  | VignetteModifier
+  | ExposureModifier;
 
 type BlurModifier =
   | TriangleBlurModifier
@@ -54,6 +55,10 @@ interface BCModifier {
 }
 
 interface VibranceModifier {
+  amount: number;
+}
+
+interface ExposureModifier {
   amount: number;
 }
 

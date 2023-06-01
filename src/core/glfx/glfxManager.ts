@@ -116,7 +116,7 @@ export class GLFXManager {
 
   simpleShader(
     shader: Shader,
-    uniforms: { [x: string]: any; name?: any },
+    uniforms: { [x: string]: any; },
     textureIn?: Texture,
     textureOut?: Texture
   ) {

@@ -117,12 +117,12 @@ export class Texture {
 
   ensureFormat(
     width: number | Texture,
-    height: number,
-    format: number,
-    type: number
+    height?: number,
+    format?: number,
+    type?: number
   ) {
     // allow passing an existing texture instead of individual arguments
-    if (arguments.length == 1) {
+    if (!height || arguments.length == 1) {
       const texture = width as Texture;
       width = texture.width;
       height = texture.height;
@@ -138,16 +138,16 @@ export class Texture {
       type != this.type
     ) {
       this.width = width as number;
-      this.height = height;
-      this.format = format;
-      this.type = type;
+      this.height = height!;
+      this.format = format!;
+      this.type = type!;
       this.gl.bindTexture(this.gl.TEXTURE_2D, this.id);
       this.gl.texImage2D(
         this.gl.TEXTURE_2D,
         0,
         this.format,
         width as number,
-        height,
+        height!,
         0,
         this.format,
         this.type,

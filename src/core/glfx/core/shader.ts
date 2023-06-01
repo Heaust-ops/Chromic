@@ -76,7 +76,7 @@ export class Shader {
     this.program = null;
   }
 
-  uniforms(uniforms: { [x: string]: any; name?: any }) {
+  uniforms(uniforms: { [x: string]: any; }) {
     this.glfx.gl.useProgram(this.program);
     for (const name in uniforms) {
       if (!uniforms[name] || !this.program) continue;
@@ -134,7 +134,7 @@ export class Shader {
     return this;
   }
 
-  textures(textures: { [x: string]: number; name: any }) {
+  textures(textures: { [x: string]: number; }) {
     this.glfx.gl.useProgram(this.program);
     for (const name in textures) {
       if (!textures[name] || !this.program) continue;

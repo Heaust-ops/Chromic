@@ -1,6 +1,11 @@
 import { component$, useSignal } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 import { Texture } from "~/core/glfx/core/texture";
+import { brightnessContrast } from "~/core/glfx/effects/adjust/brightnessContrast";
+import { denoise } from "~/core/glfx/effects/adjust/denoise";
+import { exposure } from "~/core/glfx/effects/adjust/exposure";
+import { hueSaturation } from "~/core/glfx/effects/adjust/hueSaturation";
+import { noise } from "~/core/glfx/effects/adjust/noise";
 import { GLFX } from "~/core/glfx/glfx";
 
 export default component$(() => {
@@ -37,13 +42,18 @@ export default component$(() => {
             // ctx.drawImage(img, 0, 0);
             const glfx = new GLFX(canvas);
             const texture = Texture.fromElement(glfx, img);
-            glfx.draw(texture).brightnessContrast(0, 0.2).update();
-            setInterval(() => {
-              glfx
-                .draw(texture)
-                .brightnessContrast(0, Math.sin(Date.now() / 1000))
-                .update();
-            }, 16);
+            glfx.draw(texture);
+            noise(glfx, 0.2);
+            denoise(glfx, 10);
+            brightnessContrast(glfx, 0, 0.3);
+            hueSaturation(glfx, 0.05, -0.5);
+            exposure(glfx, 0.2);
+            glfx.update();
+            // setInterval(() => {
+            //   glfx.draw(texture);
+            //   brightnessContrast(glfx, 0, Math.sin(Date.now() / 1000));
+            //   glfx.update();
+            // }, 16);
           };
         }}
       >
