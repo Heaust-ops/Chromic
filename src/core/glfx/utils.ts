@@ -1,5 +1,5 @@
 import { Shader } from "./core/shader";
-import { GLFXManager } from "./glfxManager";
+import type { GLFXManager } from "./glfxManager";
 
 export const clamp = (lo: number, value: number, hi: number) => {
   return Math.max(lo, Math.min(value, hi));
